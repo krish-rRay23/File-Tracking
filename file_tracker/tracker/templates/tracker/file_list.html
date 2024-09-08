@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File List</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .container {
+            margin-top: 50px;
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .btn-primary, .btn-secoondary {
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="text-center mb-4">Uploaded Files</h1>
+        <table class="table table-striped table-bordered">
+            <thead class="thead-dark">
+                <tr>
+                    <th>File</th>
+                    <th>Comment</th>
+                    <th>Uploaded At</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file in files %}
+                <tr>
+                    <td><a href="{{ file.file.url }}">{{ file.file.name }}</a></td>
+                    <td>{{ file.comment }}</td>
+                    <td>{{ file.uploaded_at }}</td>
+                    <td>
+                        <a href="{% url 'view_logs' file.id %}" class="btn btn-secondary btn-sm">View Logs</a>
+                        {% if not file.is_passed %}
+                        <a href="{% url 'pass_file' file.id %}" class="btn btn-primary btn-sm">Pass File</a>
+                        {% else %}
+                        <span class="badge badge-success">Passed to {{ file.passed_to.username }}</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a href="{% url 'upload_file' %}" class="btn btn-primary">Upload New File</a>
+    </div>
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
